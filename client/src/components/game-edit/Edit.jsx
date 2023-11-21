@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react"
-import { useParams } from "react-router-dom"
+import { useParams,redirect } from "react-router-dom"
 import { editGame, getGame } from "../../services/game-services";
 export default function Edit(){
 
@@ -23,6 +23,8 @@ export default function Edit(){
     useEffect(() => {
         const gameData = getGame(id).then((response) => {
             setFormValues(response)
+        }).catch((err) => {
+            redirect('/');
         })
     },[id]);
 
