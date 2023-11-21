@@ -3,9 +3,7 @@ import { useParams } from "react-router-dom"
 import {  getGame } from "../../services/game-services";
 import { createComment,getComments } from "../../services/comment-services";
 export default function Details(){
-    const FORM_KEYS = {
-        comment : 'comment',
-    }
+
     const FORM_DATA = {
         comment : '',
     }
