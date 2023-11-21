@@ -10,7 +10,7 @@ export async function createComment(gameId,e) {
 
     if(comment){
         const newComment = await request.post('http://localhost:3030/jsonstore/comments/', {
-            comment_user : 'Demo', 
+            comment_user : 'Guest', 
             comment_content : comment,
             post_id : gameId
         });
