@@ -1,16 +1,24 @@
 import { useEffect , useState} from "react";
 import { useParams } from "react-router-dom"
-import { getGame } from "../../services/game-services";
+import { getComments, getGame } from "../../services/game-services";
 export default function Details(){
 
     const {id} = useParams();
 
     const [game,setGame] = useState([]);
-
+    const [comments,setComment] = useState([]);
 
     useEffect(() => {
         const gameData = getGame(id).then((response) => {
+            console.log(response);
             setGame(response);
+        }).catch((err) => {
+            console.error(err);
+        });
+
+        const comments = getComments(id).then((response) => {
+            setComment(response)
+            console.log(response);
         }).catch((err) => {
             console.error(err);
         })
@@ -42,16 +50,19 @@ export default function Details(){
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
+                        {comments.length > 0 ? (
+                            comments.map((comment,index) => 
+                            <li className="comment" key={index}>
+                            <p>{comment.comment_user + ":" + comment.comment_content}</p>
+                        </li>
+                            )
+
+                        ) : (                    <p className="no-comment">No comments.</p>)}
                         {/* <!-- list all comments for current game (If any) --> */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+
                     </ul>
                     {/* <!-- Display paragraph: If there are no games in the database --> */}
-                    <p className="no-comment">No comments.</p>
+
                 </div>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
