@@ -36,7 +36,52 @@ export default function Edit(){
                     category: false,
                   }));
             }
-        }
+        },
+        maxLevel : (value) => {
+            const toNumber = Number(value);
+
+            if(toNumber < 1 || toNumber > 1000){
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    maxLevel: true,
+                  }));
+            }
+            else{
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    maxLevel: false,
+                  }));
+            }
+        },
+        imageUrl: (value) => {
+            const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+          
+            if (!urlRegex.test(value)) {
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                imageUrl: true,
+              }));
+            } else {
+              setErrors((prevErrors) => ({
+                ...prevErrors,
+                imageUrl: false,
+              }));
+            }
+          },
+          summary : (value) => {
+            if(value.length < 5 || value.length > 3500){
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    summary: true,
+                  }));
+            }
+            else{
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    summary: false,
+                  }));
+            }
+          }
 
       };
 
@@ -61,13 +106,13 @@ export default function Edit(){
     }
     const [formValues,setFormValues] = useState(FORM_DATA);
 
-    const runValidators = (e) => {
-        VALIDATOR_SETTINGS[e.target.name](e.target.value);
-        setErrors((updatedErrors) => {
-          console.log(updatedErrors);
-          return updatedErrors;
-        });
-      };
+    // const runValidators = (e) => {
+    //     VALIDATOR_SETTINGS[e.target.name](e.target.value);
+    //     setErrors((updatedErrors) => {
+    //       console.log(updatedErrors);
+    //       return updatedErrors;
+    //     });
+    //   };
       
     useEffect(() => {
         const gameData = getGame(id).then((response) => {
@@ -79,6 +124,10 @@ export default function Edit(){
     },[id]);
 
     const changeHandler = (event) => {
+        VALIDATOR_SETTINGS[event.target.name](event.target.value);
+        setErrors((updatedErrors) => {
+          return updatedErrors;
+        });
         setFormValues(state => ({
             ...state,
             [event.target.name] : event.target.value,
@@ -88,26 +137,28 @@ export default function Edit(){
 
     return (
         <section id="edit-page" className="auth">
-        <form id="edit" onSubmit={((e) => editGame(id,e))}>
+        <form id="edit" onSubmit={((e) => editGame(id,e,errors))}>
             <div className="container">
-
+                {Object.values(errors).includes(true) && (<p style={{color: "red", fontSize: '20px'}}>There were errors in some fields, please try again</p>)}
                 <h1>Edit Game</h1>
                 <label htmlFor="leg-title">Legendary title:</label>
-                <input type="text" id={FORM_KEYS.title} name={FORM_KEYS.title} value={formValues.title} onChange={changeHandler} onBlur={runValidators}/>
+                <input type="text" id={FORM_KEYS.title} name={FORM_KEYS.title} value={formValues.title} onChange={changeHandler} />
 
                 <label htmlFor="category">Category:</label>
-                <input type="text" id={FORM_KEYS.category} name={FORM_KEYS.category} value={formValues.category} onChange={changeHandler} onBlur={runValidators}/>
+                <input type="text" id={FORM_KEYS.category} name={FORM_KEYS.category} value={formValues.category} onChange={changeHandler} />
 
                 <label htmlFor="levels">MaxLevel:</label>
-                <input type="number" id={FORM_KEYS.maxLevel} name={FORM_KEYS.maxLevel} min="1" value={formValues.maxLevel} onChange={changeHandler} onBlur={runValidators}/>
+                <input type="number" id={FORM_KEYS.maxLevel} name={FORM_KEYS.maxLevel} min="1" value={formValues.maxLevel} onChange={changeHandler} />
 
                 <label htmlFor="game-img">Image:</label>
-                <input type="text" id={FORM_KEYS.imageUrl} name={FORM_KEYS.imageUrl} value={formValues.imageUrl} onChange={changeHandler} onBlur={runValidators}/>
+                <input type="text" id={FORM_KEYS.imageUrl} name={FORM_KEYS.imageUrl} value={formValues.imageUrl} onChange={changeHandler} />
 
                 <label htmlFor="summary">Summary:</label>
-                <textarea name={FORM_KEYS.summary} id={FORM_KEYS.summary} onChange={changeHandler} value={formValues.summary} onBlur={runValidators}></textarea>
+                <textarea name={FORM_KEYS.summary} id={FORM_KEYS.summary} onChange={changeHandler} value={formValues.summary} ></textarea>
                 <input className="btn submit" type="submit" value="Edit Game" />
 
+                
+                
             </div>
         </form>
     </section>

@@ -15,37 +15,31 @@ export const getGame = async (id) => {
     return (result);
 }
 
-export async function editGame(gameId,e) {
+export async function editGame(gameId,e,validator_settings) {
 
 
     e.preventDefault()
-
     const formData = new FormData(e.target);
     const title = formData.get('title');
     const category = formData.get('category');
     const maxLevel = formData.get('maxLevel');
     const imageUrl = formData.get('imageUrl');
     const summary = formData.get('summary');
+    const hasErrors = Array.from(Object.values(validator_settings)).map(x => x === true)
+        if(!hasErrors.includes(true)){
+     const newGame = await request.put('http://localhost:3030/jsonstore/games/' + gameId, {
+         title,
+         category,
+         maxLevel,
+         imageUrl,
+         summary,
+     })
+       }
 
 
-    const newGame = await request.put('http://localhost:3030/jsonstore/games/' + gameId, {
-        title,
-        category,
-        maxLevel,
-        imageUrl,
-        summary,
-    })
 
-    return newGame;
+    // return newGame;
 
-    // // if(comment){
-    // //     const newComment = await request.post('http://localhost:3030/jsonstore/comments/', {
-    // //         comment_user : 'Guest', 
-    // //         comment_content : comment,
-    // //         post_id : gameId
-    // //     });
-    
-    // //     return newComment;
-    // };
+
     
 }
