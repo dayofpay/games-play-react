@@ -92,7 +92,7 @@ export default function Details(){
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
                 <div className="buttons">
-                    <a href="#" className="button">Edit</a>
+                    <a href={"/game-edit/" + id} className="button">Edit</a>
                     <a href="#" className="button">Delete</a>
                 </div>
             </div>
@@ -104,7 +104,7 @@ export default function Details(){
                 <form
             className="form"
             onSubmit={(e) => {
-              createComment(game[5], e).then(() => resetForm());
+              createComment(game?.['_id'], e).then(() => resetForm());
             }}
             method="POST"
           >

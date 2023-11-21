@@ -12,7 +12,7 @@ export async function createComment(gameId,e) {
         const newComment = await request.post('http://localhost:3030/jsonstore/comments/', {
             comment_user : 'Guest', 
             comment_content : comment,
-            post_id : gameId
+            post_id : gameId,
         });
     
         return newComment;
