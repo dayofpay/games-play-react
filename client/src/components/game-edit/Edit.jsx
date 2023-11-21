@@ -22,7 +22,7 @@ export default function Edit(){
     const [formValues,setFormValues] = useState(FORM_DATA);
     useEffect(() => {
         const gameData = getGame(id).then((response) => {
-            console.log(response);
+            setFormValues(response)
         })
     },[id]);
 
