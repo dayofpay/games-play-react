@@ -64,7 +64,7 @@ export default function Edit() {
     summary: "summary",
   };
   const [formValues, setFormValues] = useState(FORM_DATA);
-
+  const [successMessage,setSuccessMessage] = useState('');
   useEffect(() => {
     const gameData = getGame(id)
       .then((response) => {
@@ -94,10 +94,13 @@ export default function Edit() {
       [fieldName]: fieldValue,
     }));
   };
+  const resetForm = () => {
 
+    setSuccessMessage('Game successfully edited!');
+  };
   return (
     <section id="edit-page" className="auth">
-      <form id="edit" onSubmit={(e) => editGame(id, e, errors)}>
+      <form id="edit" onSubmit={(e) => editGame(id, e, errors).then(() => resetForm())}>
         <div className="container">
           {Object.values(errors).some((error) => error !== "") && (
             <div style={{ color: "red", fontSize: "20px" }}>
@@ -109,6 +112,11 @@ export default function Edit() {
               </ul>
             </div>
           )}
+            {successMessage && (
+              <div className="success" style={{ color: 'green', fontSize: '15px' }}>
+                <b>{successMessage}</b>
+              </div>
+            )}
           <h1>Edit Game</h1>
                 <label htmlFor="leg-title">Legendary title:</label>
                 <input type="text" id={FORM_KEYS.title} name={FORM_KEYS.title} value={formValues.title} onChange={changeHandler} />
