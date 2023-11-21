@@ -15,8 +15,5 @@ export const getGame = async (id) => {
     return Object.values(result);
 }
 
-export const getComments = async (postId) => {
-    const result = await request.get(commentUrl + postId);
 
-    return result;
-}
+

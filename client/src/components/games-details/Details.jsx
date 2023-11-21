@@ -1,13 +1,39 @@
 import { useEffect , useState} from "react";
 import { useParams } from "react-router-dom"
-import { getComments, getGame } from "../../services/game-services";
+import {  getGame } from "../../services/game-services";
+import { createComment,getComments } from "../../services/comment-services";
 export default function Details(){
-
+    const FORM_KEYS = {
+        comment : 'comment',
+    }
+    const FORM_DATA = {
+        comment : '',
+    }
+    const changeHandler = (event) => {
+        setFormValues(state => ({
+            ...state,
+            [event.target.name] : event.target.value,
+        }))
+        setSuccessMessage('');
+    }
     const {id} = useParams();
-
     const [game,setGame] = useState([]);
     const [comments,setComment] = useState([]);
-
+    const [formValues,setFormValues] = useState(FORM_DATA);
+    const [error,setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const commentValidator = () => {
+        if (formValues.comment.length < 3) {
+          setError('Comment should be at least 3 digits long!');
+        } else {
+          setError(false);
+        }
+      };
+    
+      const resetForm = () => {
+        setFormValues(FORM_DATA);
+        setSuccessMessage('Comment successfully created!');
+      };
     useEffect(() => {
         const gameData = getGame(id).then((response) => {
             console.log(response);
@@ -15,14 +41,15 @@ export default function Details(){
         }).catch((err) => {
             console.error(err);
         });
-
-        const comments = getComments(id).then((response) => {
-            setComment(response)
+    
+        const commentsData = getComments(id).then((response) => {
+            setComment(response);
             console.log(response);
         }).catch((err) => {
             console.error(err);
-        })
-    },[]);
+        });
+    }, [id]);
+    
 
     if(!game){
         return <div style={{color:'red'}}>Loading ...</div>
@@ -76,10 +103,31 @@ export default function Details(){
             <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) --> */}
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form className="form">
-                    <textarea name="comment" placeholder="Comment......"></textarea>
-                    <input className="btn submit" type="submit" value="Add Comment"/>
-                </form>
+                <form
+            className="form"
+            onSubmit={(e) => {
+              createComment(game[5], e).then(() => resetForm());
+            }}
+            method="POST"
+          >
+            {error && (
+              <div className="error" style={{ color: 'red', fontSize: '15px' }}>
+                <b>{error}</b>
+              </div>
+            )}
+            {successMessage && (
+              <div className="success" style={{ color: 'green', fontSize: '15px' }}>
+                <b>{successMessage}</b>
+              </div>
+            )}
+            <textarea
+              name="comment"
+              placeholder="Comment......"
+              onChange={changeHandler}
+              onBlur={commentValidator}
+            ></textarea>
+            <input className="btn submit" type="submit" value="Add Comment" />
+          </form>
             </article>
 
         </section>

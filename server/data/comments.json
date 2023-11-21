@@ -1,14 +1,14 @@
 {
-    "3564027f-adcd-4425-b2c0-1253d2386c0c" : [
-        {
-            "comment_user" : "Test user",
-            "comment_content" : "This is a nice game !",
-            "comment_date" : "21/11/2023"
-        },
-        {
-            "comment_user" : "Test user",
-            "comment_content" : "This is a nice game !",
-            "comment_date" : "21/11/2023"
-        }
-    ]
+    "2aadad48-e3ce-4160-930f-136dfcb70ecb": {
+        "comment_user": "Demo",
+        "comment_content": "asd",
+        "post_id": "3564027f-adcd-4425-b2c0-1253d2386c0c",
+        "_id": "2aadad48-e3ce-4160-930f-136dfcb70ecb"
+    },
+    "d215af17-f017-4702-8200-95eeeddd7da8": {
+        "comment_user": "Demo",
+        "comment_content": "test",
+        "post_id": "3564027f-adcd-4425-b2c0-1253d2386c0c",
+        "_id": "d215af17-f017-4702-8200-95eeeddd7da8"
+    }
 }
