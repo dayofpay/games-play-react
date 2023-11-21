@@ -1,25 +1,59 @@
+import { useEffect,useState } from "react"
+import { useParams } from "react-router-dom"
+import { editGame, getGame } from "../../services/game-services";
 export default function Edit(){
+
+    const {id} = useParams();
+    const [game,setGame] = useState([]);
+    const FORM_DATA = {
+        title : '',
+        category : '',
+        maxLevel : '',
+        imageUrl : '',
+        summary : '',
+    };
+    const FORM_KEYS = {
+        title: 'title',
+        category : 'category',
+        maxLevel : 'maxLevel',
+        imageUrl : 'imageUrl',
+        summary : 'summary'        
+    }
+    const [formValues,setFormValues] = useState(FORM_DATA);
+    useEffect(() => {
+        const gameData = getGame(id).then((response) => {
+            console.log(response);
+        })
+    },[id]);
+
+    const changeHandler = (event) => {
+        setFormValues(state => ({
+            ...state,
+            [event.target.name] : event.target.value,
+        }))
+
+    }
     return (
         <section id="edit-page" className="auth">
-        <form id="edit">
+        <form id="edit" onSubmit={editGame}>
             <div className="container">
 
                 <h1>Edit Game</h1>
-                <label for="leg-title">Legendary title:</label>
-                <input type="text" id="title" name="title" value=""/>
+                <label htmlFor="leg-title">Legendary title:</label>
+                <input type="text" id={FORM_KEYS.title} name={FORM_KEYS.title} value={formValues.title} onChange={changeHandler}/>
 
-                <label for="category">Category:</label>
-                <input type="text" id="category" name="category" value=""/>
+                <label htmlFor="category">Category:</label>
+                <input type="text" id={FORM_KEYS.category} name={FORM_KEYS.category} value={formValues.category} onChange={changeHandler}/>
 
-                <label for="levels">MaxLevel:</label>
-                <input type="number" id="maxLevel" name="maxLevel" min="1" value=""/>
+                <label htmlFor="levels">MaxLevel:</label>
+                <input type="number" id={FORM_KEYS.maxLevel} name={FORM_KEYS.maxLevel} min="1" value={formValues.maxLevel} onChange={changeHandler}/>
 
-                <label for="game-img">Image:</label>
-                <input type="text" id="imageUrl" name="imageUrl" value=""/>
+                <label htmlFor="game-img">Image:</label>
+                <input type="text" id={FORM_KEYS.imageUrl} name={FORM_KEYS.imageUrl} value={formValues.imageUrl} onChange={changeHandler}/>
 
-                <label for="summary">Summary:</label>
-                <textarea name="summary" id="summary"></textarea>
-                <input className="btn submit" type="submit" value="Edit Game"/>
+                <label htmlFor="summary">Summary:</label>
+                <textarea name={FORM_KEYS.summary} id={FORM_KEYS.summary} onChange={changeHandler}></textarea>
+                <input className="btn submit" type="submit" value="Edit Game" />
 
             </div>
         </form>

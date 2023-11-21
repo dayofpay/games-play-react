@@ -58,9 +58,9 @@ export default function Details(){
             <div className="info-section">
 
                 <div className="game-header">
-                    <img className="game-img" src={game[3]} />
-                    <h1>{game[0]}</h1>
-                    <span className="levels">MaxLevel: {game[2]}</span>
+                    <img className="game-img" src={game?.['imageUrl']} />
+                    <h1>{game?.['title']}</h1>
+                    <span className="levels">MaxLevel: {game?.['maxLevel']}</span>
                     <p className="type">{game[1]}</p>
                 </div>
 
