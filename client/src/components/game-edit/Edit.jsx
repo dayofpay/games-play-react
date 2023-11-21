@@ -1,146 +1,115 @@
-import { useEffect,useState } from "react"
-import { useParams} from "react-router-dom"
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { editGame, getGame } from "../../services/game-services";
-export default function Edit(){
-    const VALIDATOR_STATUS = {
-        title : false,
-        category : false,
-        maxLevel : false,
-        imageUrl : false,
-        summary : false,
-    }
-    const VALIDATOR_SETTINGS = {
-        title: (value) => {
-          if (value.length < 2 || value.length > 15) {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              title: true,
-            }));
-          } else {
-            setErrors((prevErrors) => ({
-              ...prevErrors,
-              title: false,
-            }));
-          }
-        },
-        category : (value) => {
-            if(value.length < 3 || value.length > 10){
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    category: true,
-                  }));
-            }
-            else{
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    category: false,
-                  }));
-            }
-        },
-        maxLevel : (value) => {
-            const toNumber = Number(value);
 
-            if(toNumber < 1 || toNumber > 1000){
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    maxLevel: true,
-                  }));
-            }
-            else{
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    maxLevel: false,
-                  }));
-            }
-        },
-        imageUrl: (value) => {
-            const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-          
-            if (!urlRegex.test(value)) {
-              setErrors((prevErrors) => ({
-                ...prevErrors,
-                imageUrl: true,
-              }));
-            } else {
-              setErrors((prevErrors) => ({
-                ...prevErrors,
-                imageUrl: false,
-              }));
-            }
-          },
-          summary : (value) => {
-            if(value.length < 5 || value.length > 3500){
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    summary: true,
-                  }));
-            }
-            else{
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    summary: false,
-                  }));
-            }
-          }
+export default function Edit() {
+  const VALIDATOR_SETTINGS = {
+    title: (value) => {
+      if (value.length < 2 || value.length > 15) {
+        return "Title should be between 2 and 15 characters.";
+      }
+      return "";
+    },
+    category: (value) => {
+      if (value.length < 3 || value.length > 10) {
+        return "Category should be between 3 and 10 characters.";
+      }
+      return "";
+    },
+    maxLevel: (value) => {
+      const toNumber = Number(value);
+      if (toNumber < 1 || toNumber > 1000) {
+        return "MaxLevel should be between 1 and 1000.";
+      }
+      return "";
+    },
+    imageUrl: (value) => {
+      const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+      if (!urlRegex.test(value)) {
+        return "Invalid URL format for Image.";
+      }
+      return "";
+    },
+    summary: (value) => {
+      if (value.length < 5 || value.length > 3500) {
+        return "Summary should be between 5 and 3500 characters.";
+      }
+      return "";
+    },
+  };
 
-      };
+  const { id } = useParams();
+  const [game, setGame] = useState([]);
+  const [errors, setErrors] = useState({
+    title: "",
+    category: "",
+    maxLevel: "",
+    imageUrl: "",
+    summary: "",
+  });
+  const [hasError, setErrorState] = useState(false);
+  const FORM_DATA = {
+    title: "",
+    category: "",
+    maxLevel: "",
+    imageUrl: "",
+    summary: "",
+  };
 
-    const {id} = useParams();
-    const [game,setGame] = useState([]);
-    const [errors,setErrors] = useState(VALIDATOR_STATUS);
-    const [hasError, setErrorState] = useState(false);
-    const FORM_DATA = {
-        title : '',
-        category : '',
-        maxLevel : '',
-        imageUrl : '',
-        summary : '',
-    };
+  const FORM_KEYS = {
+    title: "title",
+    category: "category",
+    maxLevel: "maxLevel",
+    imageUrl: "imageUrl",
+    summary: "summary",
+  };
+  const [formValues, setFormValues] = useState(FORM_DATA);
 
-    const FORM_KEYS = {
-        title: 'title',
-        category : 'category',
-        maxLevel : 'maxLevel',
-        imageUrl : 'imageUrl',
-        summary : 'summary'        
-    }
-    const [formValues,setFormValues] = useState(FORM_DATA);
+  useEffect(() => {
+    const gameData = getGame(id)
+      .then((response) => {
+        console.log(response);
+        setFormValues(response);
+      })
+      .catch((err) => {
+        location.href = "/";
+      });
+  }, [id]);
 
-    // const runValidators = (e) => {
-    //     VALIDATOR_SETTINGS[e.target.name](e.target.value);
-    //     setErrors((updatedErrors) => {
-    //       console.log(updatedErrors);
-    //       return updatedErrors;
-    //     });
-    //   };
-      
-    useEffect(() => {
-        const gameData = getGame(id).then((response) => {
-            console.log(response);
-            setFormValues(response)
-        }).catch((err) => {
-            location.href = "/"
-        })
-    },[id]);
+  const changeHandler = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
 
-    const changeHandler = (event) => {
-        VALIDATOR_SETTINGS[event.target.name](event.target.value);
-        setErrors((updatedErrors) => {
-          return updatedErrors;
-        });
-        setFormValues(state => ({
-            ...state,
-            [event.target.name] : event.target.value,
-        }))
 
-    }
+    const errorMessage = VALIDATOR_SETTINGS[fieldName](fieldValue);
 
-    return (
-        <section id="edit-page" className="auth">
-        <form id="edit" onSubmit={((e) => editGame(id,e,errors))}>
-            <div className="container">
-                {Object.values(errors).includes(true) && (<p style={{color: "red", fontSize: '20px'}}>There were errors in some fields, please try again</p>)}
-                <h1>Edit Game</h1>
+  
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [fieldName]: errorMessage,
+    }));
+
+    setFormValues((state) => ({
+      ...state,
+      [fieldName]: fieldValue,
+    }));
+  };
+
+  return (
+    <section id="edit-page" className="auth">
+      <form id="edit" onSubmit={(e) => editGame(id, e, errors)}>
+        <div className="container">
+          {Object.values(errors).some((error) => error !== "") && (
+            <div style={{ color: "red", fontSize: "20px" }}>
+              There were errors in some fields, please try again:
+              <ul>
+                {Object.entries(errors).map(([fieldName, error]) => (
+                  <li key={fieldName}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <h1>Edit Game</h1>
                 <label htmlFor="leg-title">Legendary title:</label>
                 <input type="text" id={FORM_KEYS.title} name={FORM_KEYS.title} value={formValues.title} onChange={changeHandler} />
 
