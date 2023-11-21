@@ -1,14 +1,34 @@
+import { useEffect , useState} from "react";
+import { useParams } from "react-router-dom"
+import { getGame } from "../../services/game-services";
 export default function Details(){
+
+    const {id} = useParams();
+
+    const [game,setGame] = useState([]);
+
+
+    useEffect(() => {
+        const gameData = getGame(id).then((response) => {
+            setGame(response);
+        }).catch((err) => {
+            console.error(err);
+        })
+    },[]);
+
+    if(!game){
+        return <div style={{color:'red'}}>Loading ...</div>
+    }
     return (
         <section id="game-details">
             <h1>Game Details</h1>
             <div className="info-section">
 
                 <div className="game-header">
-                    <img className="game-img" src="images/MineCraft.png" />
-                    <h1>Bright</h1>
-                    <span className="levels">MaxLevel: 4</span>
-                    <p className="type">Action, Crime, Fantasy</p>
+                    <img className="game-img" src={game[3]} />
+                    <h1>{game[0]}</h1>
+                    <span className="levels">MaxLevel: {game[2]}</span>
+                    <p className="type">{game[1]}</p>
                 </div>
 
                 <p className="text">
