@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/game-services";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   const [games, setGames] = useState([]);
 
@@ -40,7 +40,8 @@ export default function Home() {
                 <span>☆</span>
               </div>
               <div className="data-buttons">
-                <a href="/game-details/:id" className="btn details-btn">
+
+                <a href={"/game-details/" + game._id} className="btn details-btn">
                   Details
                 </a>
               </div>
