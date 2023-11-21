@@ -1,28 +1,35 @@
-import { Routes, Route } from 'react-router-dom';
-
-import Header from "./components/header/Header"
-import Home from "./components/home/Home"
-import GameList from './components/game-list/GameList';
-import GameCreate from './components/game-create/GameCreate';
-import Login from './components/login/Login';
-import Register from './components/register/Register';
-import GameDetails from './components/game-details/GameDetails';
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
-    return (
-        <div id="box">
-            <Header />
+  const [count, setCount] = useState(0)
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/games" element={<GameList />} />
-                <Route path="/games/create" element={<GameCreate />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/games/:gameId" element={<GameDetails /> } />
-            </Routes>
-        </div>
-    )
+  return (
+    <>
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
 export default App
