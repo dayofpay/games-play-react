@@ -1,9 +1,9 @@
 import { useEffect , useState} from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import {  getGame } from "../../services/game-services";
 import { createComment,getComments } from "../../services/comment-services";
 export default function Details(){
-
+    const navigate = useNavigate();
     const FORM_DATA = {
         comment : '',
     }
@@ -37,14 +37,14 @@ export default function Details(){
             console.log(response);
             setGame(response);
         }).catch((err) => {
-            console.error(err);
+            navigate('/');
         });
     
         const commentsData = getComments(id).then((response) => {
             setComment(response);
             console.log(response);
         }).catch((err) => {
-            console.error(err);
+            navigate('/');
         });
     }, [id]);
     

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { editGame, getGame } from "../../services/game-services";
 
 export default function Edit() {
+  const navigate = useNavigate();
   const VALIDATOR_SETTINGS = {
     title: (value) => {
       if (value.length < 2 || value.length > 15) {
@@ -70,7 +71,7 @@ export default function Edit() {
         setFormValues(response);
       })
       .catch((err) => {
-        location.href = "/";
+        navigate('/');
       });
   }, [id]);
 
