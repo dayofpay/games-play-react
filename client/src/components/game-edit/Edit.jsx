@@ -47,7 +47,6 @@ export default function Edit() {
     imageUrl: "",
     summary: "",
   });
-  const [hasError, setErrorState] = useState(false);
   const FORM_DATA = {
     title: "",
     category: "",
