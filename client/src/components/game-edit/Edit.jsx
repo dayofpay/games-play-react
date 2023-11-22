@@ -39,7 +39,6 @@ export default function Edit() {
   };
 
   const { id } = useParams();
-  const [game, setGame] = useState([]);
   const [errors, setErrors] = useState({
     title: "",
     category: "",
