@@ -9,11 +9,13 @@ export default function Catalogue(){
             console.log(Object.values(games));
         })
     },[])
+    if(!games.length){
+        return <div style={{color:'red'}}>Loading</div>
+    }
     return (
         <section id="catalog-page">
             <h1>All Games</h1>
             {/* <!-- Display div: with information about every game (if any) --> */}
-
             {games.length ? (
             games.map((game,index) =>
             <div className="allGames" key={index}>
@@ -24,6 +26,7 @@ export default function Catalogue(){
                     <a href={'/game-details/' + game?.['_id']} className="details-button">Details</a>
                 </div>
             </div>
+
             )
             ) : <h3 className="no-articles">No articles yet</h3> }
 
