@@ -17,6 +17,7 @@ import AuthContext from "./contexts/authContext"
 import * as authService from "./services/authServices"
 import PATH_LIST from "./paths"
 import Create from "./game-create/Create"
+import { createGame } from "./services/game-services"
 function App() {
   const navigate = useNavigate();
   const [auth,setAuth] = useState(() => {
@@ -54,7 +55,11 @@ function App() {
   
     navigate(PATH_LIST.HOME);
   }
-  const logValues = {loginSubmitHandler,registerSubmitHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
+
+  const createGameHandler = (gameData) => {
+    createGame(gameData);
+  }
+  const logValues = {loginSubmitHandler,registerSubmitHandler,createGameHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
 
   return (
     <AuthContext.Provider value={logValues}>

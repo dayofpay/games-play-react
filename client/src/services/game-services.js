@@ -44,3 +44,11 @@ export async function editGame(gameId,e,validator_settings) {
 
     
 }
+
+export async function createGame(gameData){
+    const result = await request.post('http://localhost:3030/jsonstore/games',{
+        ...gameData
+    });
+
+    return result;
+}
