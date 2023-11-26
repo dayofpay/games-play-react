@@ -1,58 +1,71 @@
-import { useEffect , useState} from "react";
-import { useNavigate, useParams,Link } from "react-router-dom"
-import {  getGame } from "../../services/game-services";
-import { createComment,getComments } from "../../services/comment-services";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { getGame } from "../../services/game-services";
+import { createComment, getComments } from "../../services/comment-services";
 
-export default function Details(){
-    const navigate = useNavigate();
-    const FORM_DATA = {
-        comment : '',
-    }
-    const changeHandler = (event) => {
-        setFormValues(state => ({
-            ...state,
-            [event.target.name] : event.target.value,
-        }))
-        setSuccessMessage('');
-    }
-    const {id} = useParams();
-    const [game,setGame] = useState([]);
-    const [comments,setComment] = useState([]);
-    const [formValues,setFormValues] = useState(FORM_DATA);
-    const [error,setError] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
-    const commentValidator = () => {
-        if (formValues.comment.length < 3) {
-          setError('Comment should be at least 3 digits long!');
-        } else {
-          setError(false);
-        }
-      };
-    
-      const resetForm = () => {
-        setFormValues(FORM_DATA);
-        setSuccessMessage('Comment successfully created!');
-      };
-    useEffect(() => {
-        const gameData = getGame(id).then((response) => {
-            console.log(response);
-            setGame(response);
-        }).catch((err) => {
-            navigate('/');
-        });
-    
-        const commentsData = getComments(id).then((response) => {
-            setComment(response);
-            console.log(response);
-        }).catch((err) => {
-            navigate('/');
-        });
-    }, [id]);
-    
+export default function Details() {
+  const navigate = useNavigate();
+  const FORM_DATA = {
+    comment: "",
+  };
+  const changeHandler = (event) => {
+    setFormValues((state) => ({
+      ...state,
+      [event.target.name]: event.target.value,
+    }));
+    setSuccessMessage("");
+  };
+  const { id } = useParams();
+  const [game, setGame] = useState([]);
+  const [comments, setComment] = useState([]);
+  const [formValues, setFormValues] = useState(FORM_DATA);
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-    if(!game){
-        return <div style={{color:'red'}}>Loading ...</div>
+  const commentValidator = () => {
+    if (formValues.comment.length < 3) {
+      setError("Comment should be at least 3 digits long!");
+    } else {
+      setError(false);
     }
+  };
+
+  const resetForm = () => {
+    setFormValues(FORM_DATA);
+    setSuccessMessage("Comment successfully created!");
+  };
+
+  useEffect(() => {
+    const fetchGameAndComments = async () => {
+      try {
+        const gameData = await getGame(id);
+        setGame(gameData);
+
+        const commentsData = await getComments(id);
+        setComment(commentsData);
+      } catch (err) {
+        navigate("/");
+      }
+    };
+
+
+    fetchGameAndComments();
+  }, [id, navigate]);
+
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const newComment = await createComment(game?._id, e);
+      setComment((prevComments) => [...prevComments, newComment]);
+      resetForm();
+    } catch (error) {
+      setError("Failed to add comment. Please try again.");
+    }
+  };
+
+  if (!game) {
+    return <div style={{ color: "red" }}>Loading ...</div>;
+  }
     return (
         <section id="game-details">
             <h1>Game Details</h1>
@@ -102,13 +115,7 @@ export default function Details(){
             <!-- Add Comment ( Only for logged-in users, which is not creators of the current game ) --> */}
             <article className="create-comment">
                 <label>Add new comment:</label>
-                <form
-            className="form"
-            onSubmit={(e) => {
-              createComment(game?.['_id'], e).then(() => resetForm());
-            }}
-            method="POST"
-          >
+                <form className="form" onSubmit={(e) => addComment(e)} method="POST">
             {error && (
               <div className="error" style={{ color: 'red', fontSize: '15px' }}>
                 <b>{error}</b>
