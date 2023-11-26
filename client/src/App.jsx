@@ -22,16 +22,30 @@ function App() {
       navigate(PATH_LIST.HOME);
     }
     setAuth(result);
+
     console.log(result);
   }
+
+  const registerSubmitHandler = async (values) => {
+    const result = await authService.register(values.email,values.password);
+
+    if(result.code !== 403){
+      navigate(PATH_LIST.HOME);
+      setAuth(result);
+    }
+
+    console.log(result);
+  }
+  const logValues = {loginSubmitHandler,registerSubmitHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email}
+
   return (
-    <AuthContext.Provider value={{loginSubmitHandler}}>
+    <AuthContext.Provider value={logValues}>
 
 
     <div id="box">
       <Header />
       <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path={PATH_LIST.HOME} element={<Home />} />
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>
                 <Route path="/game-details/:id" element={<Details />}></Route>
