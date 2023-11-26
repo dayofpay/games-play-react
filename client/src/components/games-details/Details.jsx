@@ -1,7 +1,8 @@
 import { useEffect , useState} from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams,Link } from "react-router-dom"
 import {  getGame } from "../../services/game-services";
 import { createComment,getComments } from "../../services/comment-services";
+
 export default function Details(){
     const navigate = useNavigate();
     const FORM_DATA = {
@@ -92,7 +93,7 @@ export default function Details(){
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
                 <div className="buttons">
-                    <a href={"/game-edit/" + id} className="button">Edit</a>
+                    <Link to={"/game-edit/" + id} className="button">Edit</Link>
                     <a href="#" className="button">Delete</a>
                 </div>
             </div>
