@@ -53,6 +53,7 @@ export default function Edit() {
     maxLevel: "",
     imageUrl: "",
     summary: "",
+    _id : "",
   };
 
   const FORM_KEYS = {

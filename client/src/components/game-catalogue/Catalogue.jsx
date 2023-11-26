@@ -20,6 +20,7 @@ export default function Catalogue(){
             games.map((game,index) =>
             <div className="allGames" key={index}>
                 <div className="allGames-info">
+
                     <img src={game.imageUrl} alt={game.title} />
                     <h6>{game.category}</h6>
                     <h2>{game.title}</h2>

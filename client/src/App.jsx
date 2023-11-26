@@ -7,11 +7,19 @@ import Details from "./components/games-details/Details"
 import Home from "./components/games-home/Home"
 import Header from "./components/header/Header"
 import { Routes , Route } from "react-router-dom"
+import { useState } from "react"
+import AuthContext from "./contexts/authContext"
 function App() {
 
+  const [auth,setAuth] = useState({})
 
+  const loginSubmitHandler = (values) => {
+    console.log(values);
+  }
   return (
-    <>
+    <AuthContext.Provider value={{loginSubmitHandler}}>
+
+
     <div id="box">
       <Header />
       <Routes>
@@ -24,7 +32,8 @@ function App() {
                 <Route path="*" element={<Home />}></Route>
       </Routes>
     </div>
-    </>
+    </AuthContext.Provider>
+
   )
 }
 

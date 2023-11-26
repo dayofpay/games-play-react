@@ -33,6 +33,7 @@ export async function editGame(gameId,e,validator_settings) {
          maxLevel,
          imageUrl,
          summary,
+         _id: gameId,
      })
        }
 
