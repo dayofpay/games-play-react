@@ -1,5 +1,6 @@
 import { useEffect,useState } from "react";
 import { getAll } from "../../services/game-services";
+import { Link } from "react-router-dom";
 export default function Catalogue(){
 
     const [games,setGames] = useState([]);
@@ -24,7 +25,7 @@ export default function Catalogue(){
                     <img src={game.imageUrl} alt={game.title} />
                     <h6>{game.category}</h6>
                     <h2>{game.title}</h2>
-                    <a href={'/game-details/' + game?.['_id']} className="details-button">Details</a>
+                    <Link to={'/game-details/' + game?.['_id']} className="details-button">Details</Link>
                 </div>
             </div>
 

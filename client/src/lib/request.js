@@ -8,6 +8,15 @@ const buildOptions = (data) => {
         };
     }
 
+    const accessToken = localStorage.getItem('accessToken');
+
+    if(accessToken){
+        options.headers = {
+            ...options.headers,
+            'X-Authorization' : accessToken,
+        }
+    }
+
     return options;
 };
 
@@ -17,8 +26,13 @@ const request = async (method, url, data) => {
         method,
     });
 
+    if(response.status === 204){
+        return {};
+    }
     const result = await response.json();
-
+    if(!response.ok){
+        throw result;
+    }
     return result;
 };
 

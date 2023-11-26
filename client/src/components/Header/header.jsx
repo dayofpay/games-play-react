@@ -12,7 +12,7 @@ export default function Header(){
             <Link to="/games">All games</Link>
             {isAuthenticated ? (            <div id="user">
                 <Link to="#">Create Game</Link>
-                <Link to="#">Logout</Link>
+                <Link to="/logout">Logout</Link>
                 <span> | {username}</span>
             </div>) : (            <div id="guest">
                 <Link to="/login">Login</Link>

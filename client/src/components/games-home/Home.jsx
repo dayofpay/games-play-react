@@ -41,9 +41,9 @@ export default function Home() {
               </div>
               <div className="data-buttons">
 
-                <a href={"/game-details/" + game._id} className="btn details-btn">
+                <Link to={"/game-details/" + game._id} className="btn details-btn">
                   Details
-                </a>
+                </Link>
               </div>
             </div>
           ))

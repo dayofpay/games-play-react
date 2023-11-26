@@ -1,13 +1,18 @@
 
+import { Routes , Route, useNavigate } from "react-router-dom"
+import { useState } from "react"
+
 import Login from "./components/Auth/Login"
 import Register from "./components/Auth/Register"
+import Logout from "./components/Auth/Logout"
+
 import Catalogue from "./components/game-catalogue/Catalogue"
 import Edit from "./components/game-edit/Edit"
 import Details from "./components/games-details/Details"
 import Home from "./components/games-home/Home"
+
 import Header from "./components/header/Header"
-import { Routes , Route, useNavigate } from "react-router-dom"
-import { useState } from "react"
+
 import AuthContext from "./contexts/authContext"
 import * as authService from "./services/authServices"
 import PATH_LIST from "./paths"
@@ -22,7 +27,7 @@ function App() {
       navigate(PATH_LIST.HOME);
     }
     setAuth(result);
-
+    localStorage.setItem('accessToken',result.accessToken)
     console.log(result);
   }
 
@@ -31,12 +36,19 @@ function App() {
 
     if(result.code !== 403){
       navigate(PATH_LIST.HOME);
-      setAuth(result);
     }
+    setAuth(result);
+    localStorage.setItem('accessToken',result.accessToken)
 
     console.log(result);
   }
-  const logValues = {loginSubmitHandler,registerSubmitHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email}
+  const logoutHandler = () => {
+    setAuth({});
+    localStorage.removeItem('accessToken');
+  
+    navigate(PATH_LIST.HOME);
+  }
+  const logValues = {loginSubmitHandler,registerSubmitHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
 
   return (
     <AuthContext.Provider value={logValues}>
@@ -52,6 +64,7 @@ function App() {
                 <Route path="/game-edit/:id" element={<Edit />}></Route>
                 <Route path="/games" element={<Catalogue />}></Route>
                 <Route path="*" element={<Home />}></Route>
+                <Route path="/logout" element={<Logout />}></Route>
       </Routes>
     </div>
     </AuthContext.Provider>
