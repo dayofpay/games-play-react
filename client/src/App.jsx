@@ -16,6 +16,7 @@ import Header from "./components/header/Header"
 import AuthContext from "./contexts/authContext"
 import * as authService from "./services/authServices"
 import PATH_LIST from "./paths"
+import Create from "./game-create/Create"
 function App() {
   const navigate = useNavigate();
   const [auth,setAuth] = useState(() => {
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/register" element={<Register />}></Route>
                 <Route path="/game-details/:id" element={<Details />}></Route>
                 <Route path="/game-edit/:id" element={<Edit />}></Route>
+                <Route path="/game-create" element={<Create />}></Route>
                 <Route path="/games" element={<Catalogue />}></Route>
                 <Route path="*" element={<Home />}></Route>
                 <Route path="/logout" element={<Logout />}></Route>
