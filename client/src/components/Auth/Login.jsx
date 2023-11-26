@@ -3,6 +3,11 @@ import useForm from "../../hooks/useForm"
 import AuthContext from "../../contexts/authContext";
  
 export default function Login(){
+
+    const LoginFormKeys = {
+        Email: 'email',
+        Password: 'password',
+    };
     const {loginSubmitHandler} = useContext(AuthContext)
     const {values,onChange, onSubmit} = useForm(loginSubmitHandler,{
         [LoginFormKeys.Email] : '',

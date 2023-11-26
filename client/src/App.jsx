@@ -6,15 +6,23 @@ import Edit from "./components/game-edit/Edit"
 import Details from "./components/games-details/Details"
 import Home from "./components/games-home/Home"
 import Header from "./components/header/Header"
-import { Routes , Route } from "react-router-dom"
+import { Routes , Route, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import AuthContext from "./contexts/authContext"
+import * as authService from "./services/authServices"
+import PATH_LIST from "./paths"
 function App() {
-
+  const navigate = useNavigate();
   const [auth,setAuth] = useState({})
 
-  const loginSubmitHandler = (values) => {
-    console.log(values);
+  const loginSubmitHandler = async (values) => {
+    const result = await authService.login(values.email,values.password);
+
+    if(result.code !== 403){
+      navigate(PATH_LIST.HOME);
+    }
+    setAuth(result);
+    console.log(result);
   }
   return (
     <AuthContext.Provider value={{loginSubmitHandler}}>
