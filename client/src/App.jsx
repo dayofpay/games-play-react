@@ -56,8 +56,12 @@ function App() {
     navigate(PATH_LIST.HOME);
   }
 
-  const createGameHandler = (gameData) => {
-    createGame(gameData);
+  const createGameHandler = async (gameData) => {
+    const game_status = await createGame(gameData);
+
+    if(game_status){
+      navigate('/game-details/' + game_status['_id']);
+    }
   }
   const logValues = {loginSubmitHandler,registerSubmitHandler,createGameHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
 
