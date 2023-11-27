@@ -9,7 +9,7 @@ export async function createComment(gameId,e) {
     const comment = formData.get('comment');
 
     if(comment){
-        const newComment = await request.post('http://localhost:3030/jsonstore/comments/', {
+        const newComment = await request.post('http://localhost:3030/data/comments/', {
             comment_user : 'Guest', 
             comment_content : comment,
             post_id : gameId,
@@ -21,7 +21,7 @@ export async function createComment(gameId,e) {
 }
 
 export const getComments = async (postId) => {
-    const result = await request.get("http://localhost:3030/jsonstore/comments/");
+    const result = await request.get("http://localhost:3030/data/comments/");
 
     const comments = [];
     Object.values(result).map(comment => comment.post_id === postId ? comments.push(comment) : null);

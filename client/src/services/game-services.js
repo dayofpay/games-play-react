@@ -1,7 +1,7 @@
 import * as request from '../lib/request';
 
-const baseUrl = 'http://localhost:3030/jsonstore/games'
-const commentUrl = 'http://localhost:3030/jsonstore/comments/';
+const baseUrl = 'http://localhost:3030/data/games'
+const commentUrl = 'http://localhost:3030/data/comments/';
 export const getAll = async () => {
     const result = await request.get(baseUrl);
 
