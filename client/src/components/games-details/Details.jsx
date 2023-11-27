@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getGame } from "../../services/game-services";
 import { createComment, getComments } from "../../services/comment-services";
+import AuthContext from "../../contexts/authContext";
 
 export default function Details() {
   const navigate = useNavigate();
+  const {username} = useContext(AuthContext);
   const FORM_DATA = {
     comment: "",
   };
@@ -56,11 +58,16 @@ export default function Details() {
   const addComment = async (e) => {
     e.preventDefault();
     try {
-      const newComment = await createComment(game?._id, e);
+      const newComment = await createComment(game?._id, e,username);
       setComment((prevComments) => [...prevComments, newComment]);
       resetForm();
     } catch (error) {
-      setError("Failed to add comment. Please try again.");
+      if(error.code === 401){
+        setError("Please login to add comment !");
+      }
+      else{
+        setError("Failed to add comment. Please try again.");
+      }
     }
   };
 

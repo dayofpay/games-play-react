@@ -1,16 +1,17 @@
 
+
 import * as request from '../lib/request'
-export async function createComment(gameId,e) {
+
+export async function createComment(gameId,e,username) {
 
 
     e.preventDefault()
-
     const formData = new FormData(e.target);
     const comment = formData.get('comment');
 
     if(comment){
         const newComment = await request.post('http://localhost:3030/data/comments/', {
-            comment_user : 'Guest', 
+            comment_user : username, 
             comment_content : comment,
             post_id : gameId,
         });
