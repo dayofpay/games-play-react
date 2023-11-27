@@ -13,7 +13,7 @@ import Home from "./components/games-home/Home"
 
 import Header from "./components/header/Header"
 
-import AuthContext, { AuthProvider } from "./contexts/authContext"
+import { AuthProvider } from "./contexts/authContext"
 import * as authService from "./services/authServices"
 import PATH_LIST from "./paths"
 import Create from "./game-create/Create"
