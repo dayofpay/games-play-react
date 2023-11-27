@@ -27,7 +27,7 @@ export async function editGame(gameId,e,validator_settings) {
     const summary = formData.get('summary');
     const hasErrors = Array.from(Object.values(validator_settings)).map(x => x === true)
         if(!hasErrors.includes(true)){
-     const newGame = await request.put('http://localhost:3030/jsonstore/games/' + gameId, {
+     const newGame = await request.put('http://localhost:3030/data/games/' + gameId, {
          title,
          category,
          maxLevel,
@@ -46,9 +46,8 @@ export async function editGame(gameId,e,validator_settings) {
 }
 
 export async function createGame(gameData){
-    const result = await request.post('http://localhost:3030/jsonstore/games',{
+    const result = await request.post('http://localhost:3030/data/games',{
         ...gameData
     });
-
     return result;
 }

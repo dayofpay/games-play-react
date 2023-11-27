@@ -22,7 +22,7 @@ function App() {
   const navigate = useNavigate();
   const [auth,setAuth] = useState(() => {
     localStorage.removeItem('accessToken');
-
+    localStorage.removeItem('user_id');
 
     return {};
   })
@@ -34,7 +34,8 @@ function App() {
       navigate(PATH_LIST.HOME);
     }
     setAuth(result);
-    localStorage.setItem('accessToken',result.accessToken)
+    localStorage.setItem('accessToken',result.accessToken);
+    localStorage.setItem('user_id', result._id);
     console.log(result);
   }
 

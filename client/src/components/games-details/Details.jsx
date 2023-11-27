@@ -40,6 +40,7 @@ export default function Details() {
       try {
         const gameData = await getGame(id);
         setGame(gameData);
+        console.log(gameData);
 
         const commentsData = await getComments(id);
         setComment(commentsData);
@@ -66,6 +67,8 @@ export default function Details() {
   if (!game) {
     return <div style={{ color: "red" }}>Loading ...</div>;
   }
+  const isOwner = localStorage.getItem('user_id') === game?.['_ownerId'];
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
@@ -102,10 +105,12 @@ export default function Details() {
                 </div>
 
                 {/* <!-- Edit/Delete buttons ( Only for creator of this game )  --> */}
-                <div className="buttons">
-                    <Link to={"/game-edit/" + id} className="button">Edit</Link>
-                    <a href="#" className="button">Delete</a>
-                </div>
+                {isOwner && (
+                                  <div className="buttons">
+                                  <Link to={"/game-edit/" + id} className="button">Edit</Link>
+                                  <a href="#" className="button">Delete</a>
+                              </div>
+                )}
             </div>
 
             {/* <!-- Bonus -->
