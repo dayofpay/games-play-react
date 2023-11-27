@@ -13,7 +13,7 @@ import Home from "./components/games-home/Home"
 
 import Header from "./components/header/Header"
 
-import AuthContext from "./contexts/authContext"
+import AuthContext, { AuthProvider } from "./contexts/authContext"
 import * as authService from "./services/authServices"
 import PATH_LIST from "./paths"
 import Create from "./game-create/Create"
@@ -67,7 +67,7 @@ function App() {
   const logValues = {loginSubmitHandler,registerSubmitHandler,createGameHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
 
   return (
-    <AuthContext.Provider value={logValues}>
+    <AuthProvider value={logValues}>
 
 
     <div id="box">
@@ -84,7 +84,7 @@ function App() {
                 <Route path="/logout" element={<Logout />}></Route>
       </Routes>
     </div>
-    </AuthContext.Provider>
+    </AuthProvider>
 
   )
 }
