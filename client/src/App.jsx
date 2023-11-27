@@ -1,6 +1,6 @@
 
-import { Routes , Route, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { Routes , Route } from "react-router-dom"
+
 
 import Login from "./components/Auth/Login"
 import Register from "./components/Auth/Register"
@@ -14,60 +14,15 @@ import Home from "./components/games-home/Home"
 import Header from "./components/header/Header"
 
 import { AuthProvider } from "./contexts/authContext"
-import * as authService from "./services/authServices"
+
 import PATH_LIST from "./paths"
 import Create from "./game-create/Create"
-import { createGame } from "./services/game-services"
+
 function App() {
-  const navigate = useNavigate();
-  const [auth,setAuth] = useState(() => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user_id');
-
-    return {};
-  })
-
-  const loginSubmitHandler = async (values) => {
-    const result = await authService.login(values.email,values.password);
-
-    if(result.code !== 403){
-      navigate(PATH_LIST.HOME);
-    }
-    setAuth(result);
-    localStorage.setItem('accessToken',result.accessToken);
-    localStorage.setItem('user_id', result._id);
-    console.log(result);
-  }
-
-  const registerSubmitHandler = async (values) => {
-    const result = await authService.register(values.email,values.password);
-
-    if(result.code !== 403){
-      navigate(PATH_LIST.HOME);
-    }
-    setAuth(result);
-    localStorage.setItem('accessToken',result.accessToken)
-
-    console.log(result);
-  }
-  const logoutHandler = () => {
-    setAuth({});
-    localStorage.removeItem('accessToken');
   
-    navigate(PATH_LIST.HOME);
-  }
-
-  const createGameHandler = async (gameData) => {
-    const game_status = await createGame(gameData);
-
-    if(game_status){
-      navigate('/game-details/' + game_status['_id']);
-    }
-  }
-  const logValues = {loginSubmitHandler,registerSubmitHandler,createGameHandler,username:auth.username,password:auth.password,email:auth.email,isAuthenticated: !!auth.email,token: auth.accessToken,logoutHandler}
 
   return (
-    <AuthProvider value={logValues}>
+    <AuthProvider>
 
 
     <div id="box">
