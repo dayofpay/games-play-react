@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getAll } from "../../services/game-services";
 import { Link } from "react-router-dom";
-export default function Home() {
+import withAuth from "../../HOC/withAuth";
+function Home({email}) {
   const [games, setGames] = useState([]);
 
   useEffect(() => {
@@ -16,6 +17,7 @@ export default function Home() {
 
   return (
     <section id="welcome-world">
+      <h1 style={{color:'red',fontSize:'50x'}}>Welcome, {email ? email : 'Guest'}</h1>
       <div className="welcome-message">
         <h2>ALL new games are</h2>
         <h3>Only in GamesPlay</h3>
@@ -54,3 +56,7 @@ export default function Home() {
     </section>
   );
 }
+
+const EnhancedHome = withAuth(Home);
+
+export default EnhancedHome;
