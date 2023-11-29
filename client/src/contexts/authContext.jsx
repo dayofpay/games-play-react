@@ -3,6 +3,7 @@ import * as authService from '../services/authServices'
 import { useNavigate } from "react-router-dom";
 import PATH_LIST from "../paths";
 import { createGame } from "../services/game-services";
+import usePersistedState from "../hooks/usePersistedState";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({
@@ -10,12 +11,7 @@ export const AuthProvider = ({
 
 }) => {
     const navigate = useNavigate();
-    const [auth,setAuth] = useState(() => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('user_id');
-  
-      return {};
-    })
+    const [auth,setAuth] = usePersistedState('auth',{});
   
     const loginSubmitHandler = async (values) => {
       const result = await authService.login(values.email,values.password);
