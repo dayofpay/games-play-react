@@ -11,7 +11,7 @@ function Home({email}) {
         setGames(response);
       })
       .catch((err) => {
-
+        localStorage.clear();
       });
   }, []);
 
