@@ -1,9 +1,22 @@
-import { useEffect, useState,useContext } from "react";
+import { useEffect, useState,useContext, useReducer } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { getGame } from "../../services/game-services";
 import { createComment, getComments } from "../../services/comment-services";
 import AuthContext from "../../contexts/authContext";
 
+const reducer = (state,action) => {
+
+  switch (action?.type) {
+    case 'GET_ALL_COMMENTS':
+      return [...action.payload];
+      break;
+    case 'CREATE_COMMENT':
+      return [...state, action.payload];
+      break;
+    default:
+      return state;
+  }
+}
 export default function Details() {
   const navigate = useNavigate();
   const {username} = useContext(AuthContext);
@@ -19,7 +32,8 @@ export default function Details() {
   };
   const { id } = useParams();
   const [game, setGame] = useState([]);
-  const [comments, setComment] = useState([]);
+  // const [comments, setComment] = useState([]);
+  const [comments,dispatch] = useReducer(reducer,[]);
   const [formValues, setFormValues] = useState(FORM_DATA);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -45,7 +59,12 @@ export default function Details() {
         console.log(gameData);
 
         const commentsData = await getComments(id);
-        setComment(commentsData);
+
+        dispatch({
+          type: 'GET_ALL_COMMENTS',
+          payload : commentsData,
+        })
+
       } catch (err) {
         navigate("/");
       }
@@ -59,7 +78,11 @@ export default function Details() {
     e.preventDefault();
     try {
       const newComment = await createComment(game?._id, e,username);
-      setComment((prevComments) => [...prevComments, newComment]);
+      // setComment((prevComments) => [...prevComments, newComment]);
+      dispatch({
+        type: 'CREATE_COMMENT',
+        payload: newComment,
+      })
       resetForm();
     } catch (error) {
       if(error.code === 401){
